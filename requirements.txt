@@ -1,0 +1,6 @@
+scikit-image
+numpy
+tensorflow
+stqdm
+doodleverse_utils
+matplotlib
