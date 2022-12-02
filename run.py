@@ -82,7 +82,7 @@ def do_compute(images_list, use_tta=True, use_otsu=True, dims=(512, 512)):
 
         # image, worig, horig, input_img = seg_file2tensor_ND(input_img, dims)
 
-        with np.load(input_img, allow_pickle=True) as data:
+        with np.load(input_img) as data:
             input_img = data["arr_0"].astype("uint8")
 
         worig, horig, channels = input_img.shape
