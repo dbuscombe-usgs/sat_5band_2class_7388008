@@ -44,9 +44,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from skimage.transform import resize
 from skimage.io import imsave
-from skimage.filters import threshold_otsu, threshold_multiotsu
-from doodleverse_utils.prediction_imports import *
-from doodleverse_utils.imports import *
+from skimage.filters import threshold_otsu
+# from doodleverse_utils.prediction_imports import *
+from doodleverse_utils.imports import standardize, label_to_colors
 
 from glob import glob
 import zipfile
@@ -113,7 +113,13 @@ def do_compute(images_list, use_tta=True, use_otsu=True, dims=(512, 512)):
         pred = np.squeeze(est_label, axis=0)
         pred = resize(pred, (worig, horig), preserve_range=True, clip=True)
         
-        mask = np.argmax(pred,-1)
+        if use_otsu:
+            water = pred[:,:,0]
+            thres = threshold_otsu(water)
+            print("Otsu threshold is {}".format(thres))
+            mask = (water>thres).astype('uint8')
+        else:
+            mask = np.argmax(pred,-1)
 
         # input_img  = np.array(Image.open(input_img), dtype=np.uint8)
 
